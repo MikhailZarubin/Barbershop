@@ -1,6 +1,10 @@
 package grpc.barbershop.client;
 
+import grpc.barbershop.client.clientgrpc.ClientBarbershop;
+import grpc.barbershop.client.clientgrpc.IClientBarbershop;
 import grpc.barbershop.util.Constants;
+import grpc.barbershop.util.scheduler.Date;
+import grpc.barbershop.util.scheduler.Time;
 import io.grpc.ManagedChannelBuilder;
 
 import java.util.Arrays;
@@ -34,7 +38,7 @@ public class ClientMain {
                         System.out.println(ClientInterface.inputYear);
                         int year = consoleScanner.nextInt();
 
-                        clientBarbershop.getFreeTimes(day, month, year).forEach(freeTime -> System.out.println(freeTime.toString() + '\n'));
+                        clientBarbershop.getFreeTimes(new Date(day, month, year)).forEach(freeTime -> System.out.println(freeTime.toString() + '\n'));
                     }
                     case SCHEDULE_BARBERSHOP -> {
                         System.out.println(ClientInterface.inputDate + '\n' + ClientInterface.inputDay);
@@ -52,7 +56,7 @@ public class ClientMain {
                         System.out.println(ClientInterface.inputServiceId + '\n' + ClientInterface.inputId);
                         int serviceId = consoleScanner.nextInt();
 
-                        System.out.println(clientBarbershop.appointmentToBarbershop(day, month, year, hour, minutes, serviceId).toString() + '\n');
+                        System.out.println(clientBarbershop.appointmentToBarbershop(new Date(day, month, year), new Time(hour, minutes), serviceId).toString() + '\n');
                     }
                     case REMOVE_SCHEDULING -> {
                         System.out.println(ClientInterface.inputAppointmentDate + '\n' + ClientInterface.inputDay);
@@ -65,7 +69,7 @@ public class ClientMain {
                         System.out.println(ClientInterface.inputAppointmentId + '\n' + ClientInterface.inputId);
                         int appointmentId = consoleScanner.nextInt();
 
-                        System.out.println(clientBarbershop.removeAppointment(day, month, year, appointmentId).toString() + '\n');
+                        System.out.println(clientBarbershop.removeAppointment(new Date(day, month, year), appointmentId).toString() + '\n');
                     }
                 }
             } else {

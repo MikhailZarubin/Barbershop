@@ -27,7 +27,7 @@ public class BarbershopManager {
     }
 
     private TreeSet<Integer> initializeByDate(Date date) {
-        TreeSet<Integer> freeIds = new TreeSet<>(IntStream.range(0, InitializeBarbershopData.MAX_APPOINTMENT_COUNT).boxed().toList());
+        TreeSet<Integer> freeIds = new TreeSet<>(IntStream.range(1, InitializeBarbershopData.MAX_APPOINTMENT_COUNT).boxed().toList());
         mFreeIdsByDate.put(date, freeIds);
         return freeIds;
     }

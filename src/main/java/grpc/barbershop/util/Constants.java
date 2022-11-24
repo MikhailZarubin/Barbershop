@@ -11,4 +11,5 @@ public class Constants {
     public static final int EXIT_MESSAGE = 0;
     public static final String STATUS_SUCCESS = "SUCCESS";
     public static final String STATUS_NOT_SUCCESS = "NOT SUCCESS";
+    public static final int INVALID_PRICE = 0;
 }

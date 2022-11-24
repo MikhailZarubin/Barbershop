@@ -1,9 +1,10 @@
-package grpc.barbershop.client;
+package grpc.barbershop.client.clientgrpc;
 
 import barbershop.proto.*;
 import com.google.protobuf.Empty;
 import grpc.barbershop.service.common.BarbershopManager;
 import grpc.barbershop.util.scheduler.Date;
+import grpc.barbershop.util.scheduler.Time;
 import io.grpc.ManagedChannel;
 
 import java.util.ArrayList;
@@ -29,12 +30,12 @@ public class ClientBarbershop implements IClientBarbershop {
     }
 
     @Override
-    public ArrayList<GrpcFreeTime> getFreeTimes(int day, int month, int year) {
+    public ArrayList<GrpcFreeTime> getFreeTimes(Date date) {
         ArrayList<GrpcFreeTime> freeTimes = new ArrayList<>();
         Iterator<GrpcFreeTime> freeTimesIterator = mBlockingStub.getFreeTime(GrpcDate.newBuilder()
-                .setDay(day)
-                .setMonth(month)
-                .setYear(year)
+                .setDay(date.getDay())
+                .setMonth(date.getMonth())
+                .setYear(date.getYear())
                 .build());
         while (freeTimesIterator.hasNext()) {
             freeTimes.add(freeTimesIterator.next());
@@ -43,16 +44,16 @@ public class ClientBarbershop implements IClientBarbershop {
     }
 
     @Override
-    public GrpcAppointmentResponse appointmentToBarbershop(int day, int month, int year, int hour, int minutes, int serviceId) {
+    public GrpcAppointmentResponse appointmentToBarbershop(Date date, Time time, int serviceId) {
         return mBlockingStub.appointmentToBarbershop(GrpcAppointmentRequest.newBuilder()
                 .setDate(GrpcDate.newBuilder()
-                        .setDay(day)
-                        .setMonth(month)
-                        .setYear(year)
+                        .setDay(date.getDay())
+                        .setMonth(date.getMonth())
+                        .setYear(date.getYear())
                         .build())
                 .setTime(GrpcTime.newBuilder()
-                        .setHour(String.valueOf(hour))
-                        .setMinutes(String.valueOf(minutes))
+                        .setHour(String.valueOf(time.getHours()))
+                        .setMinutes(String.valueOf(time.getMinutes()))
                         .build())
                 .setBarbershopServiceId(GrpcBarbershopServiceId.newBuilder()
                         .setId(serviceId)
@@ -61,10 +62,9 @@ public class ClientBarbershop implements IClientBarbershop {
     }
 
     @Override
-    public GrpcStatus removeAppointment(int day, int month, int year, int appointmentId) {
-        Date appointmentDate = new Date(day, month, year);
+    public GrpcStatus removeAppointment(Date date, int appointmentId) {
         return mBlockingStub.removeAppointmentById(GrpcAppointmentId.newBuilder()
-                .setId(BarbershopManager.parseGlobalAppointmentId(appointmentDate, appointmentId))
+                .setId(BarbershopManager.parseGlobalAppointmentId(date, appointmentId))
                 .build());
     }
 

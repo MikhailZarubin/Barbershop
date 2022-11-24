@@ -46,11 +46,11 @@ public class ClientInterface {
             """;
 
     public static final String inputAppointmentId = """
-            Please input appointment id.
+            Please input appointment local id.
             """;
 
     public static final String inputAppointmentDate = """
-            Please input appointment id.
+            Please input appointment date.
             """;
     public static final String inputId = """
             Id:

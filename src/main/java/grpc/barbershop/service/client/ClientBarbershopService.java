@@ -54,10 +54,11 @@ public class ClientBarbershopService extends ClientBarbershopServiceGrpc.ClientB
         BarbershopService barbershopService = mBarbershopSharedData.getServiceById(request.getBarbershopServiceId().getId());
 
         Date appointmentDate = new Date(request.getDate().getDay(), request.getDate().getMonth(), request.getDate().getYear());
-        TimeInterval appointmentTimeInterval = new TimeInterval(new Time(Integer.parseInt(request.getTime().getHour()), Integer.parseInt(request.getTime().getMinutes())), barbershopService.getMinutesDuration());
+        TimeInterval appointmentTimeInterval = new TimeInterval(new Time(Integer.parseInt(request.getTime().getHour()), Integer.parseInt(request.getTime().getMinutes())),
+                barbershopService != null ? barbershopService.getMinutesDuration() : Constants.HOUR_OF_DAY * Constants.MINUTES_OF_HOUR + 1);
 
         String appointmentId = mBarbershopScheduler.appointmentToBarbershop(appointmentDate, appointmentTimeInterval);
-        int rublePriceService = barbershopService.getRublePrice();
+        int rublePriceService = barbershopService != null ? barbershopService.getRublePrice() : Constants.INVALID_PRICE;
 
         responseObserver.onNext(GrpcAppointmentResponse.newBuilder()
                 .setAppointmentId(GrpcAppointmentId.newBuilder()

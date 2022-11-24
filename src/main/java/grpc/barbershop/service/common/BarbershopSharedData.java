@@ -39,7 +39,7 @@ public class BarbershopSharedData implements IBarbershopSharedData {
         int serviceId = mFreeIds.first();
         mFreeIds.remove(serviceId);
 
-        service.setId(mFreeIds.first());
+        service.setId(serviceId);
         mBarbershopServices.add(service);
         return serviceId;
     }

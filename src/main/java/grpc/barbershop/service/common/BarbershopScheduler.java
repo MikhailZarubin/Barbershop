@@ -97,7 +97,7 @@ public class BarbershopScheduler implements IBarbershopScheduler {
     @Override
     public synchronized boolean removeAppointmentById(String appointmentId) {
         BarbershopManager.GlobalAppointmentId globalAppointmentId = BarbershopManager.unparseLocalAppointmentId(appointmentId);
-        boolean isSuccessful = mAppointmentsByDate.get(globalAppointmentId.getDate()).removeIf(appointment -> appointment.getLocalId() == globalAppointmentId.getLocalId());
+        boolean isSuccessful = mAppointmentsByDate.get(globalAppointmentId.getDate()) != null && mAppointmentsByDate.get(globalAppointmentId.getDate()).removeIf(appointment -> appointment.getLocalId() == globalAppointmentId.getLocalId());
 
         if (isSuccessful) {
             mBarbershopManager.setFreeIdByDate(globalAppointmentId.getDate(), globalAppointmentId.getLocalId());
